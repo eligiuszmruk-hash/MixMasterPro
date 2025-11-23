@@ -1,73 +1,165 @@
-# React + TypeScript + Vite
+# MixMaster Pro
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Professional DJ Mixing Application built with React, TypeScript, and Redux Toolkit.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 4 Professional Decks (A, B, C, D)
 
-## React Compiler
+Each deck includes:
+- **Compact Waveform Display**: Visual representation of audio tracks
+- **Transport Controls**:
+  - Play/Pause button with visual feedback
+  - Cue button (set and jump to cue points)
+  - Sync button (synchronize BPM between decks)
+- **Pitch Control**: Slider with -100% to +100% range for tempo adjustment
+- **Volume Control**: Fader with Solo and Mute buttons
+- **BPM Display**: Real-time BPM with Tap Tempo functionality
+- **Track Information**: Display with automatic truncation for long names
+- **Focus Indicator**: Visual highlight for active deck
+- **Quick Menu**: Intuitive track loading interface
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Responsive Design
 
-## Expanding the ESLint configuration
+- **Desktop**: 4 decks in a row (grid layout)
+- **Tablet**: 2x2 grid layout
+- **Mobile Portrait**: Stacked layout (single column)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### State Management
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Centralized state management with Redux Toolkit:
+- Independent deck states
+- Synchronized BPM control
+- Real-time updates across all components
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Technology Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **React 19** - UI framework
+- **TypeScript** - Type safety
+- **Redux Toolkit** - State management
+- **Vite** - Build tool and dev server
+- **ESLint** - Code quality
+- **CSS3** - Styling with modern features
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm (v9 or higher)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/eligiuszmruk-hash/MixMasterPro.git
+cd MixMasterPro
+
+# Install dependencies
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# Start development server
+npm run dev
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# The app will be available at http://localhost:5173/
 ```
+
+### Building
+
+```bash
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+### Code Quality
+
+```bash
+# Run ESLint
+npm run lint
+```
+
+## Project Structure
+
+```
+src/
+├── components/
+│   └── Deck/
+│       ├── Deck.tsx        # Deck component
+│       └── Deck.css        # Deck styles
+├── store/
+│   ├── store.ts           # Redux store configuration
+│   ├── deckSlice.ts       # Deck state slice
+│   └── hooks.ts           # Typed Redux hooks
+├── App.tsx                # Main application component
+├── App.css                # Application styles
+├── main.tsx               # Entry point
+└── index.css              # Global styles
+```
+
+## Usage
+
+### Loading Tracks
+
+1. Click the "Load Track" button on any deck
+2. Select a track from the Quick Menu
+3. The track will load with its waveform and BPM
+
+### Playback Controls
+
+- **Play/Pause**: Start or stop playback
+- **Cue**: Set a cue point while playing, or jump to cue point when stopped
+- **Sync**: Synchronize BPM with other playing decks
+
+### Tempo Control
+
+- Use the **Pitch Slider** to adjust tempo from -100% to +100%
+- The BPM display updates in real-time based on pitch adjustment
+
+### Volume Control
+
+- Adjust volume with the **Volume Fader** (0-100)
+- **Solo (S)**: Solo this deck (mute others)
+- **Mute (M)**: Mute this deck
+
+### Tap Tempo
+
+Click the **TAP** button multiple times to the beat:
+- 2 or more taps calculate average BPM
+- Validated to 60-200 BPM range
+- Updates deck BPM automatically
+
+### Deck Focus
+
+Click any deck to set it as the active/focused deck:
+- Cyan border highlights the active deck
+- Glowing dot indicator in the header
+- Useful for keyboard control (future feature)
+
+## Accessibility
+
+- ARIA labels on all interactive elements
+- Keyboard navigation support
+- Screen reader friendly
+- High contrast color scheme
+
+## Browser Support
+
+- Chrome/Edge (latest)
+- Firefox (latest)
+- Safari (latest)
+- Mobile browsers (iOS Safari, Chrome)
+
+## License
+
+MIT
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
