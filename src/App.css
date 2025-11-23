@@ -1,0 +1,87 @@
+.app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
+  padding: 20px;
+}
+
+.app__header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.app__title {
+  color: #00ffff;
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.app__subtitle {
+  color: #ffffff;
+  font-size: 1rem;
+  margin: 0;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+.app__main {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.deck-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* Tablet Layout - 2 columns */
+@media (max-width: 1200px) {
+  .deck-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .app__title {
+    font-size: 2rem;
+  }
+}
+
+/* Mobile Portrait Layout - Stacked (1 column) */
+@media (max-width: 768px) {
+  .app {
+    padding: 15px;
+  }
+  
+  .deck-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .app__header {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .app__title {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+  }
+  
+  .app__subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+/* Large Desktop Layout - Keep 4 columns but with max width */
+@media (min-width: 1600px) {
+  .deck-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
