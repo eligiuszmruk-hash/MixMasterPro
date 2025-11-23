@@ -80,7 +80,9 @@ const Deck: React.FC<DeckProps> = ({ deckId }) => {
       }
       const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
       const bpm = Math.round(60000 / avgInterval);
-      dispatch(setBpm({ deckId, bpm }));
+      // Validate BPM is within reasonable range (60-200)
+      const validBpm = Math.max(60, Math.min(200, bpm));
+      dispatch(setBpm({ deckId, bpm: validBpm }));
     }
   };
 
@@ -89,8 +91,13 @@ const Deck: React.FC<DeckProps> = ({ deckId }) => {
   };
 
   const loadSampleTrack = (trackName: string, bpm: number) => {
-    // Generate sample waveform data
-    const waveformData = Array.from({ length: 100 }, () => Math.random() * 100);
+    // Generate sample waveform data (simulating audio analysis)
+    // Using sine wave pattern for more realistic appearance
+    const waveformData = Array.from({ length: 100 }, (_, i) => {
+      const sine = Math.sin(i * 0.2) * 30 + 50;
+      const noise = Math.random() * 20 - 10;
+      return Math.max(10, Math.min(100, sine + noise));
+    });
     dispatch(loadTrack({ deckId, trackName, bpm, waveformData }));
     setShowQuickMenu(false);
   };
@@ -183,6 +190,7 @@ const Deck: React.FC<DeckProps> = ({ deckId }) => {
             className={`deck__button deck__button--play ${deck.isPlaying ? 'active' : ''}`}
             onClick={handlePlayPause}
             title={deck.isPlaying ? 'Pause' : 'Play'}
+            aria-label={deck.isPlaying ? 'Pause' : 'Play'}
           >
             {deck.isPlaying ? '⏸' : '▶'}
           </button>
@@ -190,6 +198,7 @@ const Deck: React.FC<DeckProps> = ({ deckId }) => {
             className={`deck__button deck__button--cue ${deck.isCueSet ? 'active' : ''}`}
             onClick={handleCue}
             title={deck.isPlaying ? 'Set Cue' : 'Jump to Cue'}
+            aria-label={deck.isPlaying ? 'Set Cue Point' : 'Jump to Cue Point'}
           >
             CUE
           </button>
@@ -197,6 +206,7 @@ const Deck: React.FC<DeckProps> = ({ deckId }) => {
             className="deck__button deck__button--sync"
             onClick={handleSync}
             title="Sync BPM"
+            aria-label="Sync BPM with other deck"
           >
             SYNC
           </button>
@@ -237,6 +247,7 @@ const Deck: React.FC<DeckProps> = ({ deckId }) => {
               className={`deck__button deck__button--small ${deck.isSolo ? 'active' : ''}`}
               onClick={handleSolo}
               title="Solo"
+              aria-label="Toggle Solo"
             >
               S
             </button>
@@ -244,6 +255,7 @@ const Deck: React.FC<DeckProps> = ({ deckId }) => {
               className={`deck__button deck__button--small ${deck.isMuted ? 'active' : ''}`}
               onClick={handleMute}
               title="Mute"
+              aria-label="Toggle Mute"
             >
               M
             </button>
