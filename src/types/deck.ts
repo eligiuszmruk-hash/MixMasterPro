@@ -17,6 +17,7 @@ export interface DeckState {
   volume: number; // Range: 0 to 100
   isSolo: boolean;
   isMuted: boolean;
+  isMutedBySolo: boolean; // Track if muted by solo action vs manual mute
   bpm: number;
   isFocused: boolean;
   waveformData: number[]; // Simplified waveform representation

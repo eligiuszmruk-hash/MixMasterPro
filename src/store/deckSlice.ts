@@ -12,9 +12,10 @@ const createInitialDeckState = (id: 'A' | 'B' | 'C' | 'D'): DeckState => ({
   volume: 75,
   isSolo: false,
   isMuted: false,
+  isMutedBySolo: false,
   bpm: 120,
   isFocused: false,
-  waveformData: Array(100).fill(0).map(() => Math.random() * 100),
+  waveformData: [],
 });
 
 const initialState = {
@@ -32,7 +33,12 @@ const deckSlice = createSlice({
       const { deckId, track } = action.payload;
       state[deckId].track = track;
       state[deckId].bpm = track.bpm;
-      state[deckId].waveformData = Array(100).fill(0).map(() => Math.random() * 100);
+      // Generate deterministic waveform based on track id
+      const seed = track.id.charCodeAt(0);
+      state[deckId].waveformData = Array(100).fill(0).map((_, i) => {
+        // Simple deterministic pseudo-random using seed and index
+        return ((seed * (i + 1) * 37) % 100);
+      });
     },
     
     togglePlay: (state, action: PayloadAction<'A' | 'B' | 'C' | 'D'>) => {
@@ -91,12 +97,16 @@ const deckSlice = createSlice({
         (['A', 'B', 'C', 'D'] as const).forEach((id) => {
           if (id !== deckId) {
             state[id].isMuted = true;
+            state[id].isMutedBySolo = true;
           }
         });
       } else {
-        // If disabling solo, unmute other decks
+        // If disabling solo, only unmute decks that were muted by solo
         (['A', 'B', 'C', 'D'] as const).forEach((id) => {
-          state[id].isMuted = false;
+          if (state[id].isMutedBySolo) {
+            state[id].isMuted = false;
+            state[id].isMutedBySolo = false;
+          }
         });
       }
     },
@@ -104,6 +114,10 @@ const deckSlice = createSlice({
     toggleMute: (state, action: PayloadAction<'A' | 'B' | 'C' | 'D'>) => {
       const deckId = action.payload;
       state[deckId].isMuted = !state[deckId].isMuted;
+      // If manually unmuting, clear the solo mute flag
+      if (!state[deckId].isMuted) {
+        state[deckId].isMutedBySolo = false;
+      }
     },
     
     tapTempo: (state, action: PayloadAction<{ deckId: 'A' | 'B' | 'C' | 'D'; bpm: number }>) => {

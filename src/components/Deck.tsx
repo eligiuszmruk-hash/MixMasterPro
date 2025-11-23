@@ -77,12 +77,12 @@ const Deck: React.FC<DeckProps> = ({ deckId }) => {
     setTapTimes(newTapTimes);
 
     if (newTapTimes.length >= 2) {
-      // Calculate average interval between taps
-      const intervals = [];
+      // Calculate average interval between taps efficiently
+      let totalInterval = 0;
       for (let i = 1; i < newTapTimes.length; i++) {
-        intervals.push(newTapTimes[i] - newTapTimes[i - 1]);
+        totalInterval += newTapTimes[i] - newTapTimes[i - 1];
       }
-      const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+      const avgInterval = totalInterval / (newTapTimes.length - 1);
       const bpm = Math.round(60000 / avgInterval);
       
       if (bpm >= 60 && bpm <= 200) {
